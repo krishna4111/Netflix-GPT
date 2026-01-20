@@ -4,6 +4,7 @@
 - Configure TailwindCss.
 - Headers
 - Login Form
+- Sign up form
 
 # Features
 

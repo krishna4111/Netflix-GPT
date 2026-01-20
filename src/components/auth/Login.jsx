@@ -1,6 +1,13 @@
+import { useState } from "react";
 import Header from "../header/Header";
 
 const Login = () => {
+  const [isSignInForm, setIsSignInForm] = useState(true);
+
+  const toggleSignInForm = () => {
+    setIsSignInForm(!isSignInForm);
+  };
+
   return (
     <div className="relative min-h-screen w-full ">
       <img
@@ -15,8 +22,20 @@ const Login = () => {
         top-[55%] sm:top-[60%] md:top-[70%] lg:top-1/2
  -translate-y-1/2 mx-auto right-0 left-0"
       >
-        <h1 className="text-3xl font-bold text-white">SignIn</h1>
+        <h1 className="text-3xl font-bold text-white">
+          {isSignInForm ? "SignIn" : "SignUp"}
+        </h1>
         <div className="m-4 ml-0">
+          {!isSignInForm && (
+            <div className="flex flex-col gap-4 mb-4">
+              <label className="text-white">Name</label>
+              <input
+                className="border p-4 rounded-md text-white focus:scale-105 focus:ring-2"
+                type="text"
+                placeholder="Enter Your Name"
+              ></input>
+            </div>
+          )}
           <div className="flex flex-col gap-4 mb-4">
             <label className="text-white">Email or mobile number</label>
             <input
@@ -35,20 +54,26 @@ const Login = () => {
           </div>
           <div className="flex flex-col gap-4 ml-0 m-2">
             <button className="bg-red-600 p-2 rounded-md text-white font-bold cursor-pointer">
-              Sign In
+              {isSignInForm ? "Sign In" : "Sign Up"}
             </button>
-            <p className="text-gray-400 text-center font-semibold m-0 p-0">
-              OR
-            </p>
-            <button className="bg-neutral-500 p-2 rounded-md text-white font-bold cursor-pointer">
-              Use a sing-in code
-            </button>
+            {isSignInForm && (
+              <>
+                <p className="text-gray-400 text-center font-semibold m-0 p-0">
+                  OR
+                </p>
+                <button className="bg-neutral-500 p-2 rounded-md text-white font-bold cursor-pointer">
+                  Use a sing-in code
+                </button>
+              </>
+            )}
           </div>
         </div>
+        {isSignInForm && (
+          <p className="text-center mt-2 mb-2 text-white font-semibold underline cursor-pointer hover:text-gray-400 hover:duration-200">
+            Forgot password?
+          </p>
+        )}
 
-        <p className="text-center mt-2 mb-2 text-white font-semibold underline cursor-pointer hover:text-gray-400 hover:duration-200">
-          Forgot password?
-        </p>
         <div className="flex items-center-safe gap-3 mb-4">
           <input
             type="checkbox"
@@ -56,10 +81,13 @@ const Login = () => {
           />
           <label className="font-semibold text-white">Remember me</label>
         </div>
-        <p className="text-gray-400 font-semibold ">
-          New to Netflix?{" "}
-          <span className="text-white cursor-pointer hover:underline hover:decoration-2">
-            Sign up now
+        <p className="text-gray-400 font-semibold">
+          {isSignInForm ? "New to Netflix? " : "Already have an account"}
+          <span
+            className="text-white cursor-pointer hover:underline hover:decoration-2 px-2"
+            onClick={toggleSignInForm}
+          >
+            {isSignInForm ? "Sign up now" : "Sign In here "}
           </span>
         </p>
       </form>
