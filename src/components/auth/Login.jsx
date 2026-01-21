@@ -1,11 +1,32 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Header from "../header/Header";
+import { signInValidation, signUpValidation } from "../../utils/validate";
 
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
+  const [errorMessage, setErrorMessage] = useState(null);
+
+  const name = useRef(null);
+  const email = useRef(null);
+  const password = useRef(null);
 
   const toggleSignInForm = () => {
     setIsSignInForm(!isSignInForm);
+  };
+
+  const handleSingInOrSignUp = () => {
+    //validate the form data.
+
+    const message = isSignInForm
+      ? signInValidation(email.current.value, password.current.value)
+      : signUpValidation(
+          name.current.value,
+          email.current.value,
+          password.current.value,
+        );
+    setErrorMessage(message);
+
+    //Once the validation finished now we can do the SigIn or SignUp
   };
 
   return (
@@ -18,6 +39,7 @@ const Login = () => {
       <Header />
 
       <form
+        onSubmit={(e) => e.preventDefault()}
         className="absolute border-2 border-black bg-black/80 p-10 w-full max-w-md rounded-md
         top-[55%] sm:top-[60%] md:top-[70%] lg:top-1/2
  -translate-y-1/2 mx-auto right-0 left-0"
@@ -30,6 +52,7 @@ const Login = () => {
             <div className="flex flex-col gap-4 mb-4">
               <label className="text-white">Name</label>
               <input
+                ref={name}
                 className="border p-4 rounded-md text-white focus:scale-105 focus:ring-2"
                 type="text"
                 placeholder="Enter Your Name"
@@ -39,6 +62,7 @@ const Login = () => {
           <div className="flex flex-col gap-4 mb-4">
             <label className="text-white">Email or mobile number</label>
             <input
+              ref={email}
               className="border p-4 rounded-md text-white focus:scale-105 focus:ring-2"
               type="text"
               placeholder="Email Address"
@@ -47,13 +71,22 @@ const Login = () => {
           <div className="flex flex-col gap-4 mb-6">
             <label className="text-white">password</label>
             <input
+              ref={password}
               className="border p-4 rounded-md text-white focus:scale-105 focus:ring-2"
               type="text"
               placeholder="Password"
             ></input>
           </div>
+
+          <p className="text-red-600 font-semibold text-md pb-3">
+            {errorMessage}
+          </p>
+
           <div className="flex flex-col gap-4 ml-0 m-2">
-            <button className="bg-red-600 p-2 rounded-md text-white font-bold cursor-pointer">
+            <button
+              className="bg-red-600 p-2 rounded-md text-white font-bold cursor-pointer"
+              onClick={handleSingInOrSignUp}
+            >
               {isSignInForm ? "Sign In" : "Sign Up"}
             </button>
             {isSignInForm && (
