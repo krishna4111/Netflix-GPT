@@ -1,6 +1,11 @@
 import { useRef, useState } from "react";
 import Header from "../header/Header";
 import { signInValidation, signUpValidation } from "../../utils/validate";
+import { auth } from "../../utils/firebase.js";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
@@ -27,6 +32,41 @@ const Login = () => {
     setErrorMessage(message);
 
     //Once the validation finished now we can do the SigIn or SignUp
+    if (!message) {
+      //signin / signup
+
+      if (!isSignInForm) {
+        createUserWithEmailAndPassword(
+          auth,
+          email.current.value,
+          password.current.value,
+        )
+          .then((userCredential) => {
+            const user = userCredential.user;
+            console.log("User Created Successfully!!!", user);
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            setErrorMessage(errorMessage);
+          });
+      } else {
+        signInWithEmailAndPassword(
+          auth,
+          email.current.value,
+          password.current.value,
+        )
+          .then((userCredential) => {
+            const user = userCredential.user;
+            console.log("user signed in successfully!!!", user);
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            setErrorMessage(errorMessage);
+          });
+      }
+    }
   };
 
   return (
