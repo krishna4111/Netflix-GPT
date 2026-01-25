@@ -5,11 +5,18 @@ import { auth } from "../../utils/firebase.js";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  updateProfile,
 } from "firebase/auth";
+import { useNavigate } from "react-router";
+import { useDispatch } from "react-redux";
+import { addUser } from "../../utils/store/userSlice.js";
 
 const Login = () => {
+  const dispatch = useDispatch();
   const [isSignInForm, setIsSignInForm] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
+
+  const navigate = useNavigate();
 
   const name = useRef(null);
   const email = useRef(null);
@@ -41,14 +48,22 @@ const Login = () => {
           email.current.value,
           password.current.value,
         )
-          .then((userCredential) => {
-            const user = userCredential.user;
-            console.log("User Created Successfully!!!", user);
+          .then((userCredentials) => {
+            const user = userCredentials.user;
+            return updateProfile(user, {
+              displayName: name.current.value,
+            })
+              .then(() => {
+                const { uid, email, displayName } = auth.currentUser;
+                dispatch(addUser({ uid, email, displayName }));
+                navigate("/browse");
+              })
+              .catch((error) => {
+                setErrorMessage(error.message);
+              });
           })
           .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            setErrorMessage(errorMessage);
+            setErrorMessage(error.message);
           });
       } else {
         signInWithEmailAndPassword(
@@ -58,7 +73,8 @@ const Login = () => {
         )
           .then((userCredential) => {
             const user = userCredential.user;
-            console.log("user signed in successfully!!!", user);
+            dispatch(addUser(user));
+            navigate("/browse");
           })
           .catch((error) => {
             const errorCode = error.code;

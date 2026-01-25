@@ -13,6 +13,8 @@
 - Create SignUp User Account.
 - Implement Signin User Api
 - created redux store with user slice.
+- Implemented signout.
+- Update profile also.
 
 # Features
 
