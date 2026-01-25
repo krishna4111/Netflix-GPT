@@ -7,16 +7,14 @@ import {
   signInWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth";
-import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
 import { addUser } from "../../utils/store/userSlice.js";
+import { LOGIN_PAGE_BACKGROUND_IMAGE } from "../../utils/imageUrlConstatns.js";
 
 const Login = () => {
   const dispatch = useDispatch();
   const [isSignInForm, setIsSignInForm] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
-
-  const navigate = useNavigate();
 
   const name = useRef(null);
   const email = useRef(null);
@@ -56,7 +54,6 @@ const Login = () => {
               .then(() => {
                 const { uid, email, displayName } = auth.currentUser;
                 dispatch(addUser({ uid, email, displayName }));
-                navigate("/browse");
               })
               .catch((error) => {
                 setErrorMessage(error.message);
@@ -74,10 +71,8 @@ const Login = () => {
           .then((userCredential) => {
             const user = userCredential.user;
             dispatch(addUser(user));
-            navigate("/browse");
           })
           .catch((error) => {
-            const errorCode = error.code;
             const errorMessage = error.message;
             setErrorMessage(errorMessage);
           });
@@ -88,7 +83,7 @@ const Login = () => {
   return (
     <div className="relative min-h-screen w-full ">
       <img
-        src="https://assets.nflxext.com/ffe/siteui/vlv3/e393bb3f-261f-43d1-99bb-16a157885615/web/IN-en-20260105-TRIFECTA-perspective_2802b120-4b8c-44a5-8fb9-617a728f4ec6_large.jpg"
+        src={LOGIN_PAGE_BACKGROUND_IMAGE}
         alt="background-img"
         className="absolute inset-0 h-full w-full object-cover"
       />

@@ -15,6 +15,8 @@
 - created redux store with user slice.
 - Implemented signout.
 - Update profile also.
+- Unsubscribed to the onAuthStateChange callback.
+- Added hardcode values into the constant files.
 
 # Features
 
