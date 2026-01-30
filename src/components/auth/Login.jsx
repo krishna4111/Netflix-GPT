@@ -9,7 +9,7 @@ import {
 } from "firebase/auth";
 import { useDispatch } from "react-redux";
 import { addUser } from "../../utils/store/userSlice.js";
-import { LOGIN_PAGE_BACKGROUND_IMAGE } from "../../utils/imageUrlConstatns.js";
+import { LOGIN_PAGE_BACKGROUND_IMAGE } from "../../utils/constants.js";
 
 const Login = () => {
   const dispatch = useDispatch();

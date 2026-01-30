@@ -9,10 +9,7 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { addUser, removeUser } from "../../utils/store/userSlice";
-import {
-  NETFLIX_LOGO,
-  USER_ICON_BASE_IMAGE,
-} from "../../utils/imageUrlConstatns";
+import { NETFLIX_LOGO, USER_ICON_BASE_IMAGE } from "../../utils/constants";
 
 const menuItems = [
   { label: "Manage Profile", icon: MdEdit },
