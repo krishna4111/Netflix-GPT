@@ -26,6 +26,8 @@
 - Fetch data for tailer video.
 - Update store with trailer video.
 - Embedded the youtube video and make it autoPlay and mute.
+- build secondary container with movie list.
+- custom hook for fetching movies.
 
 # Features
 
