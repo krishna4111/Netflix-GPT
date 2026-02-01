@@ -28,6 +28,9 @@
 - Embedded the youtube video and make it autoPlay and mute.
 - build secondary container with movie list.
 - custom hook for fetching movies.
+- build movie list and movie card.
+- tmdb image CDN url.
+- Made the Browse page better with tailwind css.
 
 # Features
 
