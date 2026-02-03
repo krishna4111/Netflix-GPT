@@ -34,3 +34,18 @@ export const UPCOMING_MOVIES =
 export const GET_VIDEO_BY_ID = "https://api.themoviedb.org/3/movie/";
 
 export const MOVIE_IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500";
+
+export const SUPPORTED_LANGUAGES = [
+  {
+    identifier: "en",
+    name: "english",
+  },
+  {
+    identifier: "tamil",
+    name: "tamil",
+  },
+  {
+    identifier: "hindi",
+    name: "hindi",
+  },
+];

@@ -9,7 +9,6 @@ import {
 } from "../utils/store/movieSlice";
 
 const useMoviesAndTvShows = () => {
-  console.log("use movie and tv show gets called");
   const dispatch = useDispatch();
 
   const fetchMovies = async () => {

@@ -31,6 +31,10 @@
 - build movie list and movie card.
 - tmdb image CDN url.
 - Made the Browse page better with tailwind css.
+- GPT search Features.
+- GPT search bar.
+- Multi lingual feature in our App.
+- Integrate GPT API (get Open AI key)
 
 # Features
 

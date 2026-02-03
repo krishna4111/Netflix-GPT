@@ -9,7 +9,13 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { addUser, removeUser } from "../../utils/store/userSlice";
-import { NETFLIX_LOGO, USER_ICON_BASE_IMAGE } from "../../utils/constants";
+import {
+  NETFLIX_LOGO,
+  SUPPORTED_LANGUAGES,
+  USER_ICON_BASE_IMAGE,
+} from "../../utils/constants";
+import { toggleGptSearchView } from "../../utils/store/gptSlice";
+import { changeLanguage } from "../../utils/store/configSlice";
 
 const menuItems = [
   { label: "Manage Profile", icon: MdEdit },
@@ -19,10 +25,18 @@ const menuItems = [
 ];
 
 const Header = () => {
+  const dispatch = useDispatch();
+
   const user = useSelector((state) => state.user.user);
+  const showGptSearch = useSelector((state) => state.gpt.showGptSearch);
+
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+
+  const handleGptSearchClick = () => {
+    //toggle my gpt search page
+    dispatch(toggleGptSearchView());
+  };
 
   const signOutUser = async () => {
     await signOut(auth);
@@ -47,6 +61,10 @@ const Header = () => {
     };
   }, []);
 
+  const handleLangSelect = (event) => {
+    dispatch(changeLanguage(event.target.value));
+  };
+
   return (
     <header className="absolute top-0 left-0 w-full z-20">
       <div className="w-full bg-gradient-to-b from-black to-transparent px-4 sm:px-8 py-4">
@@ -63,48 +81,80 @@ const Header = () => {
             alt="Netflix logo"
           />
           {user && (
-            <div
-              className="relative pb-3"
-              onMouseLeave={() => setIsOpen(false)}
-              onMouseEnter={() => setIsOpen(true)}
-            >
-              <button type="button" className=" flex  justify-end items-center">
-                <img
-                  className="rounded-md"
-                  src={USER_ICON_BASE_IMAGE}
-                  alt="user-icon"
-                />
-                <IoMdArrowDropdown
-                  className={`transition-transform duration-200  ${
-                    isOpen ? "rotate-180 duration-500" : "rotate-0"
-                  }`}
-                  size={22}
-                />
-              </button>
-              {isOpen && (
-                <div className="absolute bg-black/80  rounded-md right-0 top-full w-56 shadow-xl z-50">
-                  <ul className="p-4 text-white ">
-                    {menuItems.map(({ label, icon: Icon }) => {
-                      return (
-                        <li
-                          key={label}
-                          className="flex items-center gap-2 p-2 cursor-pointer hover:underline"
-                        >
-                          <Icon size={18} />
-                          <span>{label}</span>
-                        </li>
-                      );
-                    })}
-                    <hr className="border-gray-600" />
-                    <li
-                      className="p-2 hover:underline cursor-pointer text-center"
-                      onClick={signOutUser}
-                    >
-                      Sign out of Netflix
-                    </li>
-                  </ul>
-                </div>
+            <div className="flex gap-4 items-center justify-center">
+              {showGptSearch && (
+                <select
+                  onChange={(e) => {
+                    handleLangSelect(e);
+                  }}
+                  className="p-2 bg-gray-900 text-white"
+                >
+                  {SUPPORTED_LANGUAGES.map((lang) => {
+                    return (
+                      <option
+                        className="text-white"
+                        key={lang.identifier}
+                        value={lang.identifier}
+                      >
+                        {lang.name}
+                      </option>
+                    );
+                  })}
+                </select>
               )}
+
+              <button
+                className="py-2 px-4 bg-blue-300 rounded-lg cursor-pointer font-semibold"
+                onClick={handleGptSearchClick}
+              >
+                {showGptSearch ? "Back To Home" : "GPT Search"}
+              </button>
+              <div
+                className="relative pb-3"
+                onMouseLeave={() => setIsOpen(false)}
+                onMouseEnter={() => setIsOpen(true)}
+              >
+                <button
+                  type="button"
+                  className=" flex  justify-end items-center"
+                >
+                  <img
+                    className="rounded-md"
+                    src={USER_ICON_BASE_IMAGE}
+                    alt="user-icon"
+                  />
+                  <IoMdArrowDropdown
+                    className={`transition-transform duration-200  ${
+                      isOpen ? "rotate-180 duration-500" : "rotate-0"
+                    }`}
+                    size={22}
+                  />
+                </button>
+                {isOpen && (
+                  <div className="absolute bg-black/80  rounded-md right-0 top-full w-56 shadow-xl z-50">
+                    <ul className="p-4 text-white ">
+                      {menuItems.map(({ label, icon: Icon }) => {
+                        return (
+                          <li
+                            key={label}
+                            className="flex items-center gap-2 p-2 cursor-pointer hover:underline"
+                          >
+                            <Icon size={18} />
+                            <span>{label}</span>
+                          </li>
+                        );
+                      })}
+                      <hr className="border-gray-600" />
+                      <li
+                        className="p-2 hover:underline cursor-pointer text-center"
+                        onClick={signOutUser}
+                      >
+                        Sign out of Netflix
+                      </li>
+                    </ul>
+                  </div>
+                )}
+              </div>
             </div>
           )}
         </div>
