@@ -1,6 +1,7 @@
 import { MOVIE_IMAGE_BASE_URL } from "../../utils/constants";
 
 const MovieCard = ({ movieData }) => {
+  if (!movieData.backdrop_path) return null;
   return (
     <div className="w-60 shrink-0 relative">
       <img

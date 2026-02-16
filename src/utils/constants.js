@@ -49,3 +49,6 @@ export const SUPPORTED_LANGUAGES = [
     name: "hindi",
   },
 ];
+
+export const OPENAI_KEY = import.meta.env.VITE_OPENAI_KEY;
+export const SEARCH_MOVIE = `https://api.themoviedb.org/3/search/movie?query=`;
